@@ -95,27 +95,37 @@ void EnglishMorseTranslator::convertMorseToEnglish()
 {
    treespc::const_iterator<EnglishMorseConversionTable> iterator;
    string morse = "";
+   string line = "";
 
-   for (int charCounter = 0; charCounter < this->text.length(); charCounter++)
+   stringstream ss;
+   ss << this->text;
+
+   while (getline(ss, line))
    {
-      char character = text[charCounter];
-      if (this->isMorse(character))
+      line += " ";
+      for (int charCounter = 0; charCounter < line.length(); charCounter++)
       {
-         morse += character;
+         char character = line[charCounter];
+         if (this->isMorse(character))
+         {
+            morse += character;
+         }
+         else if (morse != "")
+         {
+            EnglishMorseConversionTable match;
+            match.morse = morse;
+            iterator = this->morseToEnglish.find(match);
+            this->translatedText += (*iterator).character;
+            morse = "";
+         }
+         else
+         {
+            this->translatedText += character;
+         }
       }
-      else if (morse != "")
-      {
-         EnglishMorseConversionTable match;
-         match.morse = morse;
-         iterator = this->morseToEnglish.find(match);
-         this->translatedText += (*iterator).character;
-         morse = "";
-      }
-      else
-      {
-         this->translatedText += character;
-      }
+      this->translatedText += "\n";
    }
+   ss.str("");
 }
 
 int EnglishMorseTranslator::getLetterOrder(const char character) const
