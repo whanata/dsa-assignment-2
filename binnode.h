@@ -2,7 +2,6 @@
 #define BINNODE_H
 
 #include <math.h>
-#include <iostream> 
 #include <stdexcept>
 
 /********************************************************\

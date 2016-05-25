@@ -25,8 +25,9 @@ string EnglishMorseTranslator::loadFile(const string file) const
 
    try
    {
-      while (getline(fin, line)) 
+      while (!fin.eof()) 
       {
+         getline(fin, line);
          text += line + "\n";
       }
    }
@@ -37,6 +38,7 @@ string EnglishMorseTranslator::loadFile(const string file) const
    }
 
    fin.close();
+   text.erase(text.end() - 1);
    return text;
 }
 
@@ -82,7 +84,6 @@ void EnglishMorseTranslator::convertEnglishToMorse()
          this->translatedText += character;
       }
    }
-   this->translatedText.erase(this->translatedText.end() - 1);
 }
 
 bool EnglishMorseTranslator::isMorse(char character) const
@@ -92,39 +93,39 @@ bool EnglishMorseTranslator::isMorse(char character) const
 
 void EnglishMorseTranslator::convertMorseToEnglish()
 {
-   treespc::const_iterator<EnglishMorseConversionTable> iterator;
    string morse = "";
-   string line = "";
 
-   stringstream ss;
-   ss << this->text;
-
-   while (getline(ss, line))
+   for (int charCounter = 0; charCounter < this->text.length(); charCounter++)
    {
-      line += " ";
-      for (int charCounter = 0; charCounter < line.length(); charCounter++)
+      char character = this->text[charCounter];
+      if (this->isMorse(character))
       {
-         char character = line[charCounter];
-         if (this->isMorse(character))
-         {
-            morse += character;
-         }
-         else if (morse != "")
-         {
-            EnglishMorseConversionTable match;
-            match.morse = morse;
-            iterator = this->morseToEnglish.find(match);
-            this->translatedText += (*iterator).character;
-            morse = "";
-         }
-         else
-         {
-            this->translatedText += character;
-         }
+         morse += character;
       }
-      this->translatedText += "\n";
+      else if (morse != "")
+      {
+         this->matchMorseToEnglish(morse);
+         morse = "";
+      }
+      else
+      {
+         this->translatedText += character;
+      }
    }
-   ss.str("");
+   if (morse != "")
+   {
+      this->matchMorseToEnglish(morse);
+   }
+}
+
+void EnglishMorseTranslator::matchMorseToEnglish(const string morse)
+{
+   treespc::const_iterator<EnglishMorseConversionTable> iterator;
+   EnglishMorseConversionTable match;
+
+   match.morse = morse;
+   iterator = this->morseToEnglish.find(match);
+   this->translatedText += (*iterator).character;
 }
 
 void EnglishMorseTranslator::loadMorseCodeFile()

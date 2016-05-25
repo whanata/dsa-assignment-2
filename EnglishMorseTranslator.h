@@ -35,6 +35,8 @@ class EnglishMorseTranslator
       vector<EnglishMorseConversionTable> englishToMorse;
       treespc::bintree<EnglishMorseConversionTable> morseToEnglish;
 
+      void matchMorseToEnglish(const string morse);
+
    public:
       static const string MORSE_CODE_FILE;
 
