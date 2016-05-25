@@ -43,7 +43,6 @@ class EnglishMorseTranslator
       void loadMorseCodeFile();
       void printFile(const string file) const;
       void convertEnglishToMorse();
-      int getLetterOrder(const char character) const;
       void convertMorseToEnglish();
       bool isMorse(const char character) const;
 

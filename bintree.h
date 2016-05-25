@@ -18,7 +18,7 @@ namespace treespc
       
    template <typename dataType> class bintree
    {
-      friend const_iterator<dataType>;
+      friend class const_iterator<dataType>;
    
       private:
          binnode<dataType> *root;

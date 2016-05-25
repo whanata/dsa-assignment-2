@@ -48,7 +48,6 @@ void EnglishMorseTranslator::printFile(const string file) const
    try
    {
       fout << this->translatedText;
-      cout << this->translatedText;
    }
    catch (exception &ex)
    {
@@ -126,11 +125,6 @@ void EnglishMorseTranslator::convertMorseToEnglish()
       this->translatedText += "\n";
    }
    ss.str("");
-}
-
-int EnglishMorseTranslator::getLetterOrder(const char character) const
-{
-   return (int)character - 97;
 }
 
 void EnglishMorseTranslator::loadMorseCodeFile()

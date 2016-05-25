@@ -11,7 +11,7 @@
 
 template <typename dataType> class binnode 
 {
-   friend const_iterator<dataType>;
+   friend class const_iterator<dataType>;
    
    private:
       dataType nodeData;
