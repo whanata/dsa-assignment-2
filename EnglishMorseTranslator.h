@@ -4,28 +4,9 @@
 #include <vector>
 
 #include "bintree.h"
+#include "EnglishMorseConversionTable.h"
 
 using namespace std;
-
-struct EnglishMorseConversionTable {
-   string character;
-   string morse;
-
-   bool operator == (const EnglishMorseConversionTable &EMCT) const 
-   {
-      return ((EMCT.character == character) || (EMCT.morse == morse));
-   }
-
-   bool operator < (const EnglishMorseConversionTable &EMCT) const
-   {
-      return (EMCT.morse < morse);
-   }
-
-   bool operator > (const EnglishMorseConversionTable &EMCT) const
-   {
-      return (EMCT.morse > morse);
-   }
-};
 
 class EnglishMorseTranslator
 {
@@ -36,17 +17,18 @@ class EnglishMorseTranslator
       treespc::bintree<EnglishMorseConversionTable> morseToEnglish;
 
       void matchMorseToEnglish(const string morse);
+      string trim(const string str) const;
+      string loadFile(const string file) const;
+      bool isMorse(const char character) const;
 
    public:
       static const string MORSE_CODE_FILE;
 
-      string loadFile(const string file) const;
       void loadTranslationFile(const string file);
       void loadMorseCodeFile();
       void printFile(const string file) const;
       void convertEnglishToMorse();
       void convertMorseToEnglish();
-      bool isMorse(const char character) const;
 
       EnglishMorseTranslator()
       {

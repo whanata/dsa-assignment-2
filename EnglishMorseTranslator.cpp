@@ -125,7 +125,17 @@ void EnglishMorseTranslator::matchMorseToEnglish(const string morse)
 
    match.morse = morse;
    iterator = this->morseToEnglish.find(match);
-   this->translatedText += (*iterator).character;
+   if (iterator != this->morseToEnglish.end())
+   {
+      this->translatedText += (*iterator).character;
+   }
+}
+
+string EnglishMorseTranslator::trim(const string str) const
+{
+   size_t first = str.find_first_not_of(' ');
+   size_t last = str.find_last_not_of(' ');
+   return str.substr(first, (last - first + 1));
 }
 
 void EnglishMorseTranslator::loadMorseCodeFile()
@@ -138,10 +148,14 @@ void EnglishMorseTranslator::loadMorseCodeFile()
    string morse = "";
    EnglishMorseConversionTable table;
 
+   int numLine = 0;
+
    while (getline(text, line))
    {
+      numLine++;
+
       character = line[0];
-      morse = line.substr(2);
+      morse = this->trim(line.substr(1));
 
       table.character = character;
       table.morse = morse;
@@ -149,6 +163,6 @@ void EnglishMorseTranslator::loadMorseCodeFile()
       this->englishToMorse.push_back(table);
       this->morseToEnglish.insert(table);
       this->morseToEnglish.balance();
-
    }
 }
+
